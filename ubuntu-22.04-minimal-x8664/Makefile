@@ -10,15 +10,21 @@ URL_DEVCONTAINERS := "https://github.com/microsoft/vscode-dev-containers.git"
 .ONESHELL:
 
 apt-update:
-	sudo apt-get upgrade && sudo apt-get update -y
+	sudo apt-get update && sudo apt-get upgrade -y
 
 apt-install: apt-update
 	sudo apt-get install -y vim \
 							git \
 							ca-certificates \
     						curl \
-    						gnupg
+    						gnupg \
+							gnome-tweaks
+snap-install:
+	snap install spotify \
+				sublime-text --classic 
 
+drivers-add:
+	sudo ubuntu-drivers autoinstall
 vscode-setup: 
 	snap install code --classic
 		
@@ -61,6 +67,14 @@ logout-user :
 		[Nn]* ) echo "Manually logout later to enable docker run for $$USERNAME";; \
 		* ) echo  "Please answer yes or no.";; \
 	esac 
+
+minikube-add-url:
+	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+	sudo install minikube-linux-amd64 /usr/local/bin/minikube
+	rm minikube-linux-amd64
+	minikube start
+	minikube stop
+
 
 docker-priv-add-src-list:
 	sudo mkdir -m 0755 -p /etc/apt/keyrings
